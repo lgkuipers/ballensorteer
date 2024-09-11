@@ -1,0 +1,12 @@
+C:\Lolke_6\OpenTK\OpenTK\obj\Debug\OpenTK2.csprojAssemblyReference.cache
+C:\Lolke_6\OpenTK\OpenTK\obj\Debug\OpenTK.Properties.Resources.resources
+C:\Lolke_6\OpenTK\OpenTK\obj\Debug\OpenTK2.csproj.GenerateResource.cache
+C:\Lolke_6\OpenTK\OpenTK\obj\Debug\OpenTK2.csproj.CoreCompileInputs.cache
+C:\Lolke_6\OpenTK\OpenTK\obj\Debug\OpenTK.exe
+C:\Lolke_6\OpenTK\OpenTK\obj\Debug\OpenTK.pdb
+C:\Lolke_6\OpenTK\OpenTK\bin\Debug\OpenTK.exe.config
+C:\Lolke_6\OpenTK\OpenTK\bin\Debug\OpenTK.exe
+C:\Lolke_6\OpenTK\OpenTK\bin\Debug\OpenTK.pdb
+C:\Lolke_6\OpenTK\OpenTK\bin\Debug\OpenTK.dll
+C:\Lolke_6\OpenTK\OpenTK\bin\Debug\OpenTK.xml
+C:\Lolke_6\OpenTK\OpenTK\obj\Debug\OpenTK2.csproj.CopyComplete
