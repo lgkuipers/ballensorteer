@@ -12,10 +12,18 @@
 
 using System;
 using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
+using LearnOpenTK.Common;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using StbImageSharp;
 using OpenTK.Input;
+using KeyPressEventArgs = OpenTK.KeyPressEventArgs;
+using static System.Net.Mime.MediaTypeNames;
+using System.Runtime.InteropServices.ComTypes;
+using System.Drawing.Imaging;
 
 namespace OpenTK2
 {
@@ -36,10 +44,36 @@ namespace OpenTK2
 
         private Ball startBall = new Ball();
 
+        private Bitmap bitmap;
+        //private Bitmap bmp;
+        private int height = 512;
+        private int width = 512;
+        //private Graphics gfx;
+        private int texture;
+
+        private Graphics graphics;
+        private Font arialFont;
+
+        private int pos = 0;
+
         public Game2()
           : base(800, 600, GraphicsMode.Default, "OpenTK Quick Start Sample")
         {
             VSync = VSyncMode.On;
+        }
+
+        private byte[] BmpToBytes_MemStream(Bitmap bmp)
+        {
+            MemoryStream ms = new MemoryStream();
+            // Save to memory using the Jpeg format
+            bmp.Save(ms, ImageFormat.Jpeg);
+
+            // read to end
+            byte[] bmpBytes = ms.GetBuffer();
+            //bmp.Dispose();
+            ms.Close();
+
+            return bmpBytes;
         }
 
         protected override void OnLoad(EventArgs aE)
@@ -65,6 +99,62 @@ namespace OpenTK2
             GL.Enable(EnableCap.Light0);
             GL.Enable(EnableCap.ColorMaterial);
             //GL.Enable(EnableCap.DepthTest);
+
+
+            /*
+            //ImageResult image = ImageResult.FromStream(File.OpenRead("../../container.jpg"), ColorComponents.RedGreenBlueAlpha);
+            texture = GL.GenTexture();
+            GL.BindTexture(TextureTarget.Texture2D, texture);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+
+            //GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, image.Data);
+            
+            string imageFilePath = @"../../container.jpg";
+            bitmap = (Bitmap)System.Drawing.Image.FromFile(imageFilePath);//load the image file
+
+            graphics = Graphics.FromImage(bitmap);
+            arialFont = new Font("Arial", 50);
+            graphics.DrawString("Demo", arialFont, Brushes.White, new PointF(1, 1));
+            
+            //bitmap.Save(imageFilePath);
+            var bmpBytes = BmpToBytes_MemStream(bitmap);
+            ImageResult image = ImageResult.FromMemory(bmpBytes);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgb, PixelType.UnsignedByte, image.Data);
+            */
+
+
+
+
+            texture = GL.GenTexture();
+            GL.BindTexture(TextureTarget.Texture2D, texture);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+
+            bitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            string imageFilePath = @"../../container.jpg";
+            //bitmap = (Bitmap)System.Drawing.Image.FromFile(imageFilePath);//load the image file
+            graphics = Graphics.FromImage(bitmap);
+            arialFont = new Font("Arial", 50);
+            graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+
+            FontFamily fontFamily = new FontFamily("Arial");
+            Font font = new Font(
+                fontFamily,
+                50,
+                FontStyle.Regular,
+                GraphicsUnit.Pixel);
+            graphics.DrawString("Test", font, new SolidBrush(Color.BlueViolet), new PointF(1, 1));
+
+            //MemoryStream stream = new MemoryStream();
+            //bmp.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg);
+            //stream.ToArray();
+            //GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmp.Width, bmp.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, stream.ToArray());
+
+            var bmpBytes = BmpToBytes_MemStream(bitmap);
+            ImageResult image = ImageResult.FromMemory(bmpBytes);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgb, PixelType.UnsignedByte, image.Data);
+
         }
 
         protected override void OnResize(EventArgs aE)
@@ -283,16 +373,18 @@ namespace OpenTK2
 
             //DrawFirstTriangle();
 
+            DrawLegend();
+
             DrawBottom();
 
 
             //         GL.Translate(0.4,0.4,-0.25);
 
-            DrawScene();
+            //DrawScene();
 
             Machine.Instance().UpdateState();
 
-            Machine.Instance().GetBalls().ForEach(b => b.Draw());
+            //Machine.Instance().GetBalls().ForEach(b => b.Draw());
 
             //DrawSpere(-2.5 + ivBall / 60, 0.5, 1.0, Color.Blue, 0.0, 0.5);
 
@@ -340,6 +432,44 @@ namespace OpenTK2
             GL.Vertex3(-sizef, sizef, 0.0f);
 
             GL.End();
+        }
+
+        private void DrawLegend()
+        {
+            float b = 1.0f;
+            float x = 5.0f;
+            float y = 3.0f;
+            float z = 1.0f;
+            GL.Begin(PrimitiveType.Quads);
+            GL.Normal3(new Vector3(0.0f, 0.0f, 1.0f));
+            GL.Color3(1.0, 1.0, 1.0);
+            GL.Vertex3(x - b, y, z - b);
+            GL.Vertex3(x + b, y, z - b);
+            GL.Vertex3(x + b, y, z + b);
+            GL.Vertex3(x - b, y, z + b);
+            GL.End();
+
+            bitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            graphics = Graphics.FromImage(bitmap);
+            graphics.DrawString("Legend", arialFont, Brushes.White, new PointF(pos++, 1));
+            if (pos == 250) pos = 1;
+            var bmpBytes = BmpToBytes_MemStream(bitmap);
+            ImageResult image = ImageResult.FromMemory(bmpBytes);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgb, PixelType.UnsignedByte, image.Data);
+            
+            GL.Enable(EnableCap.Texture2D);
+            GL.BindTexture(TextureTarget.Texture2D, texture);
+
+            GL.Begin(PrimitiveType.Quads);
+
+            GL.TexCoord3(0.0f, 0.0f, 0f); GL.Vertex3(0f, 0f, 0f);
+            GL.TexCoord3(1.0f, 0.0f, 0f); GL.Vertex3(10, 0f, 0f);
+            GL.TexCoord3(1.0f, 1.0f, 0f); GL.Vertex3(10, 10, 0f);
+            GL.TexCoord3(0.0f, 1.0f, 0f); GL.Vertex3(0f, 10, 0f);
+
+            GL.End();
+
+            GL.Disable(EnableCap.Texture2D);
         }
 
         private void DoMotion()

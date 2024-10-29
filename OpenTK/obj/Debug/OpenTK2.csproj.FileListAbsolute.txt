@@ -10,3 +10,16 @@ C:\Lolke_6\OpenTK\OpenTK\bin\Debug\OpenTK.pdb
 C:\Lolke_6\OpenTK\OpenTK\bin\Debug\OpenTK.dll
 C:\Lolke_6\OpenTK\OpenTK\bin\Debug\OpenTK.xml
 C:\Lolke_6\OpenTK\OpenTK\obj\Debug\OpenTK2.csproj.CopyComplete
+C:\Innovatieve projecten\BallenSorteerMachine\OpenTK\bin\Debug\OpenTK.exe.config
+C:\Innovatieve projecten\BallenSorteerMachine\OpenTK\bin\Debug\OpenTK.exe
+C:\Innovatieve projecten\BallenSorteerMachine\OpenTK\bin\Debug\OpenTK.pdb
+C:\Innovatieve projecten\BallenSorteerMachine\OpenTK\bin\Debug\OpenTK.dll
+C:\Innovatieve projecten\BallenSorteerMachine\OpenTK\bin\Debug\OpenTK.xml
+C:\Innovatieve projecten\BallenSorteerMachine\OpenTK\obj\Debug\OpenTK2.csproj.AssemblyReference.cache
+C:\Innovatieve projecten\BallenSorteerMachine\OpenTK\obj\Debug\OpenTK.Properties.Resources.resources
+C:\Innovatieve projecten\BallenSorteerMachine\OpenTK\obj\Debug\OpenTK2.csproj.GenerateResource.cache
+C:\Innovatieve projecten\BallenSorteerMachine\OpenTK\obj\Debug\OpenTK2.csproj.CoreCompileInputs.cache
+C:\Innovatieve projecten\BallenSorteerMachine\OpenTK\obj\Debug\OpenTK2.csproj.Up2Date
+C:\Innovatieve projecten\BallenSorteerMachine\OpenTK\obj\Debug\OpenTK.exe
+C:\Innovatieve projecten\BallenSorteerMachine\OpenTK\obj\Debug\OpenTK.pdb
+C:\Innovatieve projecten\BallenSorteerMachine\OpenTK\bin\Debug\StbImageSharp.dll
