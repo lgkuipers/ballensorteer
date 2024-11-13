@@ -24,6 +24,7 @@ using KeyPressEventArgs = OpenTK.KeyPressEventArgs;
 using static System.Net.Mime.MediaTypeNames;
 using System.Runtime.InteropServices.ComTypes;
 using System.Drawing.Imaging;
+using System.Drawing.Drawing2D;
 
 namespace OpenTK2
 {
@@ -54,6 +55,7 @@ namespace OpenTK2
         private Graphics graphics;
         private Font arialFont;
 
+        private int pos_origin = 20;
         private int pos = 0;
 
         public Game2()
@@ -442,7 +444,7 @@ namespace OpenTK2
             float z = 1.0f;
             GL.Begin(PrimitiveType.Quads);
             GL.Normal3(new Vector3(0.0f, 0.0f, 1.0f));
-            GL.Color3(1.0, 1.0, 1.0);
+            GL.Color3(0.0, 1.0, 1.0);
             GL.Vertex3(x - b, y, z - b);
             GL.Vertex3(x + b, y, z - b);
             GL.Vertex3(x + b, y, z + b);
@@ -451,22 +453,28 @@ namespace OpenTK2
 
             bitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             graphics = Graphics.FromImage(bitmap);
-            graphics.DrawString("Legend", arialFont, Brushes.White, new PointF(pos++, 1));
+            GraphicsState state = graphics.Save();
+            graphics.TranslateTransform(0, height);
+            graphics.ScaleTransform(1, -1);
+            graphics.RotateTransform(0);
+            graphics.DrawString("Legend", arialFont, Brushes.White, new PointF(pos_origin + pos++, 400));
+            graphics.Restore(state);
             if (pos == 250) pos = 1;
             var bmpBytes = BmpToBytes_MemStream(bitmap);
             ImageResult image = ImageResult.FromMemory(bmpBytes);
+            GL.Color3(1.0, 1.0, 1.0);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgb, PixelType.UnsignedByte, image.Data);
             
             GL.Enable(EnableCap.Texture2D);
             GL.BindTexture(TextureTarget.Texture2D, texture);
 
             GL.Begin(PrimitiveType.Quads);
-
+            
             GL.TexCoord3(0.0f, 0.0f, 0f); GL.Vertex3(0f, 0f, 0f);
-            GL.TexCoord3(1.0f, 0.0f, 0f); GL.Vertex3(10, 0f, 0f);
-            GL.TexCoord3(1.0f, 1.0f, 0f); GL.Vertex3(10, 10, 0f);
-            GL.TexCoord3(0.0f, 1.0f, 0f); GL.Vertex3(0f, 10, 0f);
-
+            GL.TexCoord3(1.0f, 0.0f, 0f); GL.Vertex3(5, 0f, 0f);
+            GL.TexCoord3(1.0f, 1.0f, 0f); GL.Vertex3(5, 0, 5f);
+            GL.TexCoord3(0.0f, 1.0f, 0f); GL.Vertex3(0f, 0, 5f);
+            
             GL.End();
 
             GL.Disable(EnableCap.Texture2D);
